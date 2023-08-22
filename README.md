@@ -1,25 +1,15 @@
 # space-travel
 
-## Project setup
-```
-npm install
-```
+## Objectif de ce projet ##
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+1 - Apprendre TypeScript
+2 - Réutiliser un composant pour créer 3 pages (props)
+3 - Améliorer mes connaissances en Scss
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Projet réalisé avec :  ##
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-# space-travel
+- Vue 3
+- Vue Composition Api
+- Vue Router
+- Typescript
+- Scss

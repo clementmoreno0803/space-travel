@@ -1,21 +1,20 @@
 <template>
   <Header />
-  
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-import Header from './layout/TheHeader.vue'
+import { defineComponent } from "vue";
+import Header from "./layout/TheHeader.vue";
 export default defineComponent({
   components: {
-    Header
+    Header,
   },
-})
+});
 </script>
 
 <style lang="scss">
+@import "@/scss/index.scss";
 
-  @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
-body{
+body {
   margin: 0;
   padding: 0;
 }
@@ -27,24 +26,38 @@ body{
   text-align: center;
   color: #2c3e50;
 }
-h2,h3, p{
+  h1 {
+    text-transform: uppercase;
+    color: $white;
+    font-size: 1.3rem;
+    font-weight: lighter;
+    text-align: left;
+    padding-bottom: 40px;
+    @media (max-width: 992px) {
+      padding: 10px 0;
+      margin: 0;
+    }
+    @media (max-width: 768px) {
+      padding: 25px 0;
+      margin: 0;
+      text-align: center;
+    }
+  }
+h2,
+h3 {
   margin: 0;
-  font-family: 'Crimson Text';
+  font-family: $primary-font;
 }
-h1{
-  text-transform: uppercase;
-  color: white;
-  font-size: 1.3rem;
-  font-weight: lighter;
-  text-align: left;
-  padding-bottom: 40px;
-}
-.container{
+.container {
   width: calc(100vw - 260px);
   height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  // background: green;
+  @media (max-width: 768px) {
+    width: calc(100vw - 80px);
+    display: block;
+    height: auto;
+  }
 }
 </style>

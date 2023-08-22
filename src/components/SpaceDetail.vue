@@ -20,16 +20,30 @@
         srcset=""
       />
       <div class="content-text">
-  <!-- Button Technology Page -->
-  <div v-if="category == 'technology'" id="technology" class="content-button-container" :style="category == 'technology' ? 'flex-direction: column' : 'flex-direction: row'">
-    <button
-      @click="currentContent = index"
-      v-for="(content, index) in Object.values(contentDetail[category])"
-      :key="content"
-      :class="currentContent == index ? 'button-technology active' : 'button-technology '"
-    >{{ index }}
-    </button>
-  </div>
+        <!-- Button Technology Page -->
+        <div
+          v-if="category == 'technology'"
+          id="technology"
+          class="content-button-container"
+          :style="
+            category == 'technology' && windowSize > 768
+              ? 'flex-direction: column'
+              : 'flex-direction: row'
+          "
+        >
+          <button
+            @click="currentContent = index"
+            v-for="(content, index) in Object.values(contentDetail[category])"
+            :key="content"
+            :class="
+              currentContent == index
+                ? 'button-technology active'
+                : 'button-technology '
+            "
+          >
+            {{ index }}
+          </button>
+        </div>
         <!-- DESTINATIONS -->
         <ul v-if="category == 'destinations'">
           <!-- changement de contenu au click -->
@@ -44,13 +58,12 @@
         </ul>
         <h3>{{ content.role }}</h3>
         <div>
-        <h2>
-          {{ content.name }}
-        </h2>
-        <p>{{ content.description }}</p>
-        <p>{{ content.bio }}</p>
-        </div>
-        <!-- page Destinations = Display seulement la distance et le travel  -->
+          <h2>
+            {{ content.name }}
+          </h2>
+          <p>{{ content.description }}</p>
+          <p>{{ content.bio }}</p>
+           <!-- page Destinations = Display seulement la distance et le travel  -->
         <div class="content-text-destination" v-if="category == 'destinations'">
           <span class="content-text-destination-line"></span>
           <div class="content-text-destination-title">
@@ -68,20 +81,22 @@
             </div>
           </div>
         </div>
+
+          <!-- Button CREW Page -->
+          <div v-if="category == 'crew'" class="content-button-container">
+            <button
+              @click="currentContent = index"
+              v-for="(content, index) in Object.values(contentDetail[category])"
+              :key="content"
+              :class="
+                currentContent == index ? 'button-crew active' : 'button-crew '
+              "
+            ></button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-          <!-- Button Crew Page -->
-  <div v-if="category == 'crew'" class="content-button-container">
-    <button
-      @click="currentContent = index"
-      v-for="(content, index) in Object.values(contentDetail[category])"
-      :key="content"
-      :class="currentContent == index ? 'button-crew active' : 'button-crew '"
-    >
-    </button>
-  </div>
-
 </template>
 
 <script lang="ts">
@@ -97,6 +112,7 @@ export default defineComponent({
   },
   setup() {
     const currentContent = ref<number>(0);
+    const windowSize = ref<number>(window.innerWidth);
     const contentDetail = reactive<Content>({
       destinations: [
         {
@@ -211,21 +227,29 @@ export default defineComponent({
         return "technology";
       }
     };
-    return { currentContent, contentDetail, getViewClass };
+    return { currentContent, contentDetail, windowSize, getViewClass };
   },
 });
 </script>
 
 <style lang="scss" scoped>
+@import "@/scss/index.scss";
 p {
-  color: white;
+  color: $white;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 }
+// destination style
 .destination {
   .content {
-    // @container
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    @include flexbox(row, space-around, center);
+    height: 420px;
+    @media (max-width: 992px) {
+      @include flexbox(column, flex-end, center);
+
+      height: auto;
+    }
     .content-text {
       max-width: 500px;
       text-align: left;
@@ -234,45 +258,52 @@ p {
         margin: 0;
         padding: 0;
         gap: 10px;
+        @media (max-width: 992px) {
+          justify-content: center;
+        }
         li {
-          color: white;
+          color: $white;
           list-style: none;
-          cursor: pointer;
+          cursor: $pointer;
           width: auto;
           padding: 5px;
           &.active {
-            border-bottom: 2px solid white;
+            border-bottom: 2px solid $white;
           }
         }
       }
       h2 {
         font-size: 5rem;
-        color: white;
+        color: $white;
         font-weight: 400;
         text-transform: uppercase;
         padding: 30px 0;
+        @media (max-width: 992px) {
+          text-align: center;
+        }
       }
       .content-text-destination-line {
         content: "";
-        position: relative;
+        position: static;
         width: 100%;
         display: block;
-        opacity: 0.2;
         margin: 20px 0;
         height: 1px;
-        background: white;
+        background: $white;
       }
       .content-text-destination-title {
         display: flex;
         gap: 40px;
+        @media (max-width: 992px) {
+          justify-content: space-between;
+        }
         h3 {
           font-size: 0.8rem;
-          color: white;
-          opacity: 0.5;
+          color: $grey;
         }
         .content-text-destination-subtitle {
-          font-family: "Crimson Text";
-          color: white;
+          font-family: $primary-font;
+          color: $white;
           font-size: 1.7rem;
           text-transform: uppercase;
           font-weight: lighter;
@@ -280,101 +311,144 @@ p {
       }
     }
     img {
-      width: auto;
-      max-height: 600px;
-      height: 100%;
+      @include imageProperty(auto, 600px, 100%);
+      margin-right: 80px;
+      @media (max-width: 992px) {
+        @include imageProperty(auto, 120px, 100%);
+        margin-right: 0;
+        margin-bottom: 30px;
+      }
     }
   }
 }
+// crew style
 .crew {
   .content {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    @include flexbox(row, flex-start, center);
     max-width: 40%;
     height: 420px;
     text-align: left;
+    @media (max-width: 768px) {
+      max-width: 100%;
+      @include flexbox(row, flex-start, flex-start);
+    }
+
     img {
       position: absolute;
       bottom: 0;
       right: 10%;
-      width: auto;
-      max-height: 60%;
-      height: 100%;
+      @include imageProperty(auto, 60%, 100%);
+      @media (max-width: 992px) {
+        @include imageProperty(auto, 50%, 100%);
+      }
+      @media (max-width: 768px) {
+        @include imageProperty(auto, 33%, 100%);
+      }
     }
     h2 {
-      font-size: 2.3rem;
+      font-size: 2.8rem;
       text-transform: uppercase;
-      color: white;
+      color: $white;
       padding: 15px 0 30px;
+      @media (max-width: 768px) {
+        text-align: center;
+        font-size: 1.6rem;
+      }
     }
     h3 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       text-transform: uppercase;
-      color: white;
-      opacity: 0.5;
+      color: $grey;
+      @media (max-width: 768px) {
+        text-align: center;
+        font-size: 1.3rem;
+      }
     }
   }
 }
+// technology style
 .technology {
   .content {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-start;
-    max-width: 40%;
+    @include flexbox(row-reverse, flex-start, center);
+    max-width: 50%;
     height: 420px;
     text-align: left;
-    .content-text{
+    @media (max-width: 992px) {
+      max-width: 100%;
+      @include flexbox(column-reverse, flex-end, flex-start);
+      height: auto;
+    }
+    .content-text {
       display: flex;
+      align-items: center;
+      @media (max-width: 768px) {
+        display: block;
+      }
     }
     img {
       position: absolute;
-      // bottom: 0;
       right: 0;
-      width: auto;
-      max-height: 600px;
-      height: 100%;
+      @include imageProperty(35%, null, auto);
+
+      @media (max-width: 992px) {
+        @include imageProperty(50%, null, auto);
+        position: static;
+        margin: 0 auto;
+      }
     }
     h2 {
       font-size: 2.3rem;
       text-transform: uppercase;
-      color: white;
+      color: $white;
       padding: 15px 0 30px;
+      @media (max-width: 768px) {
+        font-size: 1.6rem;
+        text-align: center;
+      }
     }
     h3 {
       font-size: 1.8rem;
       text-transform: uppercase;
-      color: white;
+      color: $white;
       opacity: 0.5;
     }
   }
 }
+
+// Buttons style
 .content-button-container {
   text-align: left;
   display: flex;
+  @media (max-width: 768px) {
+    justify-content: center;
+    z-index: 9;
+    position: relative;
+  }
   .button-crew {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     margin-right: 10px;
     border: none;
-    opacity: 0.6;
-    cursor: pointer;
+    background: $grey;
+    cursor: $pointer;
     &.active {
-      opacity: 1;
+      background: $white;
     }
   }
   .button-technology {
     width: 50px;
     height: 50px;
-    border: 1px solid white;
+    border: 1px solid $white;
     border-radius: 50%;
     background: transparent;
-    color: #fff;
-    margin: 0  50px 40px 0;
+    color: $white;
+    cursor: $pointer;
+    &:not(:last-child) {
+      margin: 0 50px 40px 0;
+    }
     &.active {
-      background: white;
+      background: $white;
       color: black;
     }
   }
